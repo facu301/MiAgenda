@@ -1,4 +1,5 @@
 #include "agenda.h"
+#include <cstring>
 
 
 
@@ -12,7 +13,7 @@ bool hayEspacio(sAgenda* miAgenda) {
  */
 eAgrContacto agregarContacto(sAgenda* miAgenda, sContacto miContacto) {
     if (!hayEspacio(miAgenda))
-        return eAgrContacto::ErrAgrEspacio;
+        resizeContactos(miAgenda->misContactos, miAgenda->CantContactos , miAgenda->CantContactos); //mio
 
     miAgenda->CantContactos++;
     miAgenda->misContactos[miAgenda->CantContactos - 1] = miContacto;
@@ -146,7 +147,7 @@ eRmContacto removerContacto(sAgenda* miAgenda, eGrupo Grupo) //preguntar como se
 
     while(true)
      {
-        if ((aux->Grupo == Grupo))
+        if (aux->Grupo == Grupo)
          {
             *aux = ContactoNulo;
             cont++;
@@ -170,9 +171,9 @@ ePrintContacto imprimirContacto(sAgenda* miAgenda, eGrupo Grupo) //preguntar com
 
     while(true)
      {
-        if ((aux->Grupo == Grupo))
+        if (aux->Grupo == Grupo)
         {
-            std::cout<<*aux;
+            std::cout<<aux->Nombre<<aux->Apellido;
             cont++;
         }
         if (aux == ultimo)
@@ -188,18 +189,20 @@ ePrintContacto imprimirContacto(sAgenda* miAgenda, eGrupo Grupo) //preguntar com
 //imprimo ordenado por grupos
 ePrintContacto imprimirContacto(sAgenda* miAgenda)
 {
-    int cont;
-    cont = 0;
+    int cont, i;
+    cont = i = 0;
     sContacto* aux = miAgenda->misContactos, * ultimo = (miAgenda->misContactos) + miAgenda->CantContactos - 1;
 
     while(true)
-     {
-        if ((aux->Grupo == Grupo))
+    {
+        if (aux->Grupo == i)
         {
-            std::cout<<*aux;
+            std::cout<<aux->Nombre<<aux->Apellido;
             cont++;
         }
         if (aux == ultimo)
+            i++;
+        if (i>5)
             break;
         aux++;
     }
@@ -207,4 +210,34 @@ ePrintContacto imprimirContacto(sAgenda* miAgenda)
         return ePrintContacto::ErrPrintContactos;
     else
         return ePrintContacto::ExitoPrint;
+}
+
+//agrego contacto ordenado
+eAgrContacto agregarContactoOrdenado(sAgenda* miAgenda, sContacto miContact)
+{
+    sContacto* ultimoContacto = miAgenda->misContactos + miAgenda->CantContactos - 1;
+
+    if (!hayEspacio(miAgenda))
+        resizeContactos(miAgenda->misContactos, miAgenda->CantContactos , miAgenda->CantContactos);
+
+    miAgenda->CantContactos++;
+    miAgenda->misContactos[miAgenda->CantContactos - 1] = miContact;
+
+    for(u_int i = 0; i < miAgenda->CantContactos - 1; i++) {
+        sContacto& Actual = miAgenda->misContactos[i]; // *(miAgenda->misContactos + i)
+        char Ape1 = (Actual.Apellido[0] >= 'A' && Actual.Apellido[0] <= 'Z') ?
+                        Actual.Apellido[0] + ('a' - 'A') : Actual.Apellido[0];
+        for(sContacto* miContacto = miAgenda->misContactos; miContacto == ultimoContacto; miContacto++) {
+            char Ape2 = (miContacto->Apellido[0] >= 'A' && miContacto->Apellido[0] <= 'Z') ?
+                            miContacto->Apellido[0] + ('a' - 'A') : miContacto->Apellido[0];
+
+            if(Ape1 > Ape2) {
+                sContacto aux = Actual;
+                Actual = *miContacto;
+                *miContacto = aux;
+            }
+        }
+    }
+
+    return eAgrContacto::ExitoAgregar;
 }

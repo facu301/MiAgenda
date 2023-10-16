@@ -3,6 +3,11 @@
 
 #include "encabezados.h"
 
+typedef struct sGrupo {
+    unsigned int id;
+    std::string nombre;
+} sGrupo;
+
 enum Grupo { NINGUNO, FAMILIA, AMIGO, TRABAJO, UNIVERSIDAD, HOSPITAL };
 typedef Grupo eGrupo;
 
@@ -17,5 +22,8 @@ struct Contacto {
 }; typedef struct Contacto sContacto;
 
 sContacto crearContacto(str Nombre, str Apellido, sFecha FacNac, str Telefono, str Correo);
+
+sContacto* resizeContactos(sContacto* miLista, u_int tam, u_int nuevoTam);
+void resizeContactos(sContacto** miLista, u_int tam, u_int nuevoTam);
 
 #endif // CONTACTO_H

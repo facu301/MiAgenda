@@ -30,6 +30,7 @@ bool hayEspacio(sAgenda* miAgenda);
 
 /* Funcion de agregar contacto */
 eAgrContacto agregarContacto(sAgenda* miAgenda, sContacto miContacto);
+eAgrContacto agregarContactoOrdenado(sAgenda* miAgenda, sContacto miContacto); //mio
 
 /* Funciones de actualización del contacto */
 eUpdContacto actualizarContacto(sAgenda* miAgenda, sContacto miContacto);
@@ -39,7 +40,7 @@ eUpdContacto actualizarContacto(sAgenda* miAgenda, u_int indexContacto, sContact
 eRmContacto removerContacto(sAgenda* miAgenda, str Nombre, str Apellido);
 eRmContacto removerContacto(sAgenda* miAgenda, sContacto miContacto);
 eRmContacto removerContacto(sAgenda* miAgenda, u_int indexContacto);
-eRmContacto removerContacto(sAgenda* miAgenda, eGrupo Grupo) //mio
+eRmContacto removerContacto(sAgenda* miAgenda, eGrupo Grupo); //mio
 
 /* Funciones de busqueda de contacto */
 sContacto buscarContacto(sAgenda* miAgenda, str valorBusqueda);

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream> //mio
+#include <string.h> //mio
 
 typedef std::string str;
 typedef unsigned int u_int;
